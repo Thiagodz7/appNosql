@@ -1,0 +1,36 @@
+version: "3.3"
+services: 
+  app:
+    container_name: container-app
+    image: thiagodz7/mongo-app:2.1
+    networks:
+      - app-sisaud-network
+    ports:
+      - "3000:3000"
+    volumes: 
+       - type: bind
+         source: /root/appNosql/app/logs
+         target: /usr/src/app/logs
+    depends_on: 
+      - mongo
+  mongo:
+     container_name: container-mongo
+     image: mongo:6.0.3
+     networks:
+       - app-sisaud-network
+     ports:
+       - 27017:27017
+     environment:
+        MONGO_INITDB_ROOT_USERNAME: adm
+        MONGO_DATABASE: usuarios
+        MONGO_USER: adm
+        MONGO_INITDB_ROOT_PASSWORD: 123
+     volumes:
+         - type: bind
+           source: /root/appNosql/mongo/vol-mongo
+           target: /var/lib/mongo
+networks:
+  app-sisaud-network:
+    driver: bridge
+       
+     
